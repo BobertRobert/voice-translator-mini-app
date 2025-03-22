@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Голосовой Переводчик</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Голосовой Переводчик</h1>
+    <button id="recordButton">Записать голос</button>
+    <p id="status">Нажмите кнопку, чтобы начать запись.</p>
+    <p id="translation"></p>
+
+    <script>
+        // Функция для отправки данных боту
+        function sendToBot(data) {
+            Telegram.WebApp.sendData(JSON.stringify(data));
+        }
+
+        // Обработчик кнопки записи
+        document.getElementById('recordButton').addEventListener('click', () => {
+            document.getElementById('status').textContent = "Запись начата...";
+            // Здесь можно добавить логику для записи голоса через Web Audio API
+            // После записи отправляем данные боту
+            const recordedData = "Пример текста для перевода"; // Замените на реальные данные
+            sendToBot({ type: 'voice', data: recordedData });
+        });
+
+        // Обработка данных от бота
+        Telegram.WebApp.onEvent('message', (data) => {
+            const translation = JSON.parse(data).translation;
+            document.getElementById('translation').textContent = `Перевод: ${translation}`;
+        });
+    </script>
+</body>
+</html>
